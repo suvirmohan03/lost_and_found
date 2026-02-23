@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Browse Items</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<header>
+<img src="{{ url_for('static', filename='logo.png') }}">
+<h1>Lost and Found</h1>
+</header>
+
+<nav>
+<a href="/">Home</a>
+<a href="/report">Report Item</a>
+<a href="/browse">Browse Items</a>
+<a href="/admin">Admin</a>
+</nav>
+
+<div class="container">
+
+<h2>Approved Items</h2>
+
+<p>
+We found <span style="color:#1e6bd6;font-weight:bold;">{{ total }}</span> unclaimed items.
+</p>
+
+<input type="text" id="searchBox" placeholder="Search items...">
+<br><br>
+
+{% for item in items %}
+
+<div class="card itemCard">
+
+<h3>{{ item[1] }}</h3>
+
+{% if item[5] %}
+<img src="{{ url_for('static', filename='uploads/' + item[5]) }}" width="120">
+{% endif %}
+
+<p>{{ item[2] }}</p>
+<p><b>Location:</b> {{ item[3] }}</p>
+
+<form action="/request_return/{{ item[0] }}" method="get">
+<button>Request Return</button>
+</form>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+<script>
+
+let searchBox = document.getElementById("searchBox"); // get the search box element
+
+searchBox.addEventListener("keyup", function(){ // run code whenever user types
+
+let filter = searchBox.value.toLowerCase(); // get the typed text and convert to lowercase
+
+let cards = document.getElementsByClassName("itemCard"); // get all item cards
+
+for(let i = 0; i < cards.length; i++){ // loop through every item card
+
+let text = cards[i].innerText.toLowerCase(); // get the text inside each card
+
+if(text.includes(filter)){ // check if card text matches search text
+cards[i].style.display = "block"; // show the card
+}else{
+cards[i].style.display = "none"; // hide the card if it doesn't match
+}
+
+}
+
+});
+
+</script>
+
+</body>
+</html>

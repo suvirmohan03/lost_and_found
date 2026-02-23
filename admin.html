@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Admin Panel</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<header>
+<img src="{{ url_for('static', filename='logo.png') }}">
+<h1>Lost and Found Admin Panel</h1>
+</header>
+
+<nav>
+<a href="/">Home</a>
+<a href="/report">Report Item</a>
+<a href="/browse">Browse Items</a>
+<a href="/admin">Admin</a>
+</nav>
+
+<div class="container">
+
+<h2>Manage Items</h2>
+
+{% for item in items %}
+
+<div class="card">
+
+<h3>{{ item[1] }}</h3>
+<p>{{ item[2] }}</p>
+<p><b>Location:</b> {{ item[3] }}</p>
+<p><b>Status:</b> {{ item[4] }}</p>
+
+
+{% if item[4] == "Pending" %}
+<a href="/approve/{{ item[0] }}">
+<button>Approve Item</button>
+</a>
+{% endif %}
+
+
+{% if item[4] == "Return Requested" %}
+<a href="/approve_return/{{ item[0] }}">
+<button>Approve Return</button>
+</a>
+
+<a href="/deny_return/{{ item[0] }}">
+    <button>Deny Return</button>
+</a>
+
+{% endif %}
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</body>
+</html> 
